@@ -7,8 +7,7 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "start": "ts-node src/app.ts",
-
+    "start": "tsc && node dist/app.js",
     "vercel-start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "postinstall": "prisma generate",
@@ -48,9 +47,7 @@
     "socket.io": "^4.8.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
-    "zod": "^4.1.11",
-     "ts-node": "^10.9.2",
-  "typescript": "^5.9.3"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -60,6 +57,8 @@
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
     "prisma": "^6.19.1",
-    "ts-node-dev": "^2.0.0"
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
