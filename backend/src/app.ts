@@ -73,14 +73,6 @@ app.use(
 );
 
 // ---------- Routes ----------
-app.get("/api/test", (req, res) => {
-  res.json({ 
-    message: "Backend is working!", 
-    timestamp: new Date().toISOString(),
-    origin: req.headers.origin 
-  });
-});
-
 app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());
 
@@ -89,6 +81,15 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 // ---------- Routes ----------
 app.use(rootRouter);
+
+// Test endpoint (must be after main router)
+app.get("/api/test", (req, res) => {
+  res.json({ 
+    message: "Backend is working!", 
+    timestamp: new Date().toISOString(),
+    origin: req.headers.origin 
+  });
+});
 
 // ---------- Error Handler ----------
 app.use(errorHandlerMiddleware);
