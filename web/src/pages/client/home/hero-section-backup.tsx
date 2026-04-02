@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import FilterTab from "./_components/filter-tab";
-import { Search, MapPin, Star, Users, ArrowRight, Sparkles, Globe, Shield } from "lucide-react";
+import { Search, MapPin, Star, Calendar, Users, ArrowRight, Sparkles, Globe, Heart, Shield } from "lucide-react";
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -73,6 +73,21 @@ const HeroSection = () => {
               Book with confidence and create memories that last a lifetime.
             </p>
 
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mb-12">
+              {[
+                "Best Price Guarantee",
+                "24/7 Customer Support", 
+                "Free Cancellation",
+                "Verified Properties"
+              ].map((trust, index) => (
+                <div key={index} className="flex items-center gap-2 text-white/70 text-sm">
+                  <div className="w-1 h-1 bg-green-400 rounded-full" />
+                  {trust}
+                </div>
+              ))}
+            </div>
+
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button className="group relative bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-2xl hover:shadow-yellow-500/25 transition-all duration-300 hover:scale-105">
@@ -80,6 +95,7 @@ const HeroSection = () => {
                   Start Your Journey
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               
               <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
