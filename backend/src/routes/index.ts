@@ -11,6 +11,9 @@ import { CommisionRouter } from "./v1/commision.routes";
 import { PaymentsRouter } from "./v1/payments.routes";
 import { AiRouter } from "./v1/ai.routes";
 import { ActivitiesRouter } from "./v1/activities.routes";
+import { HighlightRouter } from "./v1/highlight.routes";
+import { NearbyPlaceRouter } from "./v1/nearby-place.routes";
+import { PolicyRouter } from "./v1/policy.routes";
 
 const rootRouter = Router();
 
@@ -21,6 +24,12 @@ rootRouter.get("/", (req, res) => {
 rootRouter.get("/api/v1/health", (req, res) => {
   res.json({ ok: true });
 });
+
+// Register these routes BEFORE PropertyRouter to prevent route conflicts
+// These routes handle /api/v1/properties/:propertyId/highlights, nearby-places, and policy
+rootRouter.use("/api/v1", HighlightRouter);
+rootRouter.use("/api/v1", NearbyPlaceRouter);
+rootRouter.use("/api/v1", PolicyRouter);
 
 rootRouter.use("/api/v1/properties", PropertyRouter);
 rootRouter.use("/api/v1/auth", AuthRouter);

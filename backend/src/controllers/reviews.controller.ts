@@ -4,7 +4,17 @@ export default {
   // ===== CREATE REVIEW =====
   createReview: tryCatch(async (req, res) => {
     const userId = req.user.id;
-    const { content, rating, propertyId } = req.body;
+    const { 
+      content, 
+      rating, 
+      propertyId,
+      serviceRating,
+      cleanlinessRating,
+      locationRating,
+      facilitiesRating,
+      staffRating,
+      valueRating
+    } = req.body;
 
     if (!content || !propertyId) {
       return res
@@ -15,7 +25,18 @@ export default {
     const review = await prisma.$transaction(async (prisma) => {
       // 1. Create review
       const createdReview = await prisma.review.create({
-        data: { content, rating, propertyId, userId },
+        data: { 
+          content, 
+          rating, 
+          propertyId, 
+          userId,
+          serviceRating,
+          cleanlinessRating,
+          locationRating,
+          facilitiesRating,
+          staffRating,
+          valueRating
+        },
       });
 
       // 2. Recalculate averageRating and reviewCount
@@ -163,6 +184,38 @@ export default {
       propertyId,
       averageRating: parseFloat((aggregate._avg.rating || 0).toFixed(2)),
       reviewCount: aggregate._count.rating,
+    });
+  }),
+
+  // ===== GET CATEGORY RATING AVERAGES =====
+  getCategoryRatings: tryCatch(async (req, res) => {
+    const { propertyId } = req.params;
+
+    const aggregate = await prisma.review.aggregate({
+      where: { propertyId },
+      _avg: {
+        serviceRating: true,
+        cleanlinessRating: true,
+        locationRating: true,
+        facilitiesRating: true,
+        staffRating: true,
+        valueRating: true,
+      },
+      _count: { id: true },
+    });
+
+    res.json({
+      propertyId,
+      categoryRatings: {
+        service: parseFloat((aggregate._avg.serviceRating || 0).toFixed(2)),
+        cleanliness: parseFloat((aggregate._avg.cleanlinessRating || 0).toFixed(2)),
+        location: parseFloat((aggregate._avg.locationRating || 0).toFixed(2)),
+        facilities: parseFloat((aggregate._avg.facilitiesRating || 0).toFixed(2)),
+        staff: parseFloat((aggregate._avg.staffRating || 0).toFixed(2)),
+        value: parseFloat((aggregate._avg.valueRating || 0).toFixed(2)),
+      },
+      reviewCount: aggregate._count.id,
+      success: true,
     });
   }),
 };

@@ -22,6 +22,7 @@ const allowedOriginPatterns = [
   /^https:\/\/property-management-system[\w-]*-mohammed-ahmedins-projects\.vercel\.app$/,
   /^https:\/\/solomongetnet\.pro\.et$/,
   /^http:\/\/localhost:(4000|5173|3000)$/,
+  /^http:\/\/10\.27\.237\.146:(4000|5173|3000)$/,
 ];
 
 const staticOrigins = [

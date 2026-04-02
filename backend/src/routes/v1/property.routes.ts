@@ -15,6 +15,7 @@ router.get("/location-stats", propertiesController.getLocationStats);
 
 router.post("/reviews", authGuard(), reviewsController.createReview);
 router.get("/reviews/:propertyId", reviewsController.getReviews);
+router.get("/reviews/:propertyId/category-ratings", reviewsController.getCategoryRatings);
 
 router.get(
   "/management",

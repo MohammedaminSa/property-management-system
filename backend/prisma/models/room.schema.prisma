@@ -30,6 +30,7 @@ model Room {
 
   @@unique([roomId, propertyId])
 }
+
 model RoomImage {
   id        String   @id @default(uuid())
   url       String

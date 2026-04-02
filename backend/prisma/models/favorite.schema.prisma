@@ -1,16 +1,16 @@
 model Favorite {
-    id     String @id @default(uuid())
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
-    room   Room?   @relation(fields: [roomId], references: [id])
-    roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id])
+  roomId String?
 
-    property   Property? @relation(fields: [propertyId], references: [id])
-    propertyId String?
+  property   Property? @relation(fields: [propertyId], references: [id])
+  propertyId String?
 
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
-    // Prevent duplicates for same user+entity
-    @@unique([userId, roomId, propertyId])
+  // Prevent duplicates for same user+entity
+  @@unique([userId, roomId, propertyId])
 }

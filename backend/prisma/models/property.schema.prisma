@@ -8,17 +8,20 @@ model Property {
   visibility Boolean      @default(true)
 
   // Relations
-  images     PropertyImage[]
-  about      About?
-  location   Location?
-  facilities Facility[]
-  contact    Contact?
-  rooms      Room[]
-  bookings   Booking[]
-  activities Activity[]
-  history    History[]
-  reviews    Review[]
-  favorites  Favorite[]
+  images       PropertyImage[]
+  about        About?
+  location     Location?
+  facilities   Facility[]
+  contact      Contact?
+  rooms        Room[]
+  bookings     Booking[]
+  activities   Activity[]
+  history      History[]
+  reviews      Review[]
+  favorites    Favorite[]
+  highlights   Highlight[]
+  nearbyPlaces NearbyPlace[]
+  policy       PropertyPolicy?
 
   // ✅ One-to-one License
   license License?
@@ -133,6 +136,14 @@ model Review {
   content String
   rating  Int?
 
+  // Category ratings
+  serviceRating     Int?
+  cleanlinessRating Int?
+  locationRating    Int?
+  facilitiesRating  Int?
+  staffRating       Int?
+  valueRating       Int?
+
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String?
 
@@ -221,4 +232,59 @@ enum CarServicePricingType {
   PER_TRIP
   PER_DAY
   PER_HOUR
+}
+
+// --- Highlights ---
+model Highlight {
+  id          String @id @default(uuid())
+  icon        String
+  title       String
+  description String
+  order       Int    @default(0)
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- Nearby Places ---
+model NearbyPlace {
+  id       String              @id @default(uuid())
+  name     String
+  category NearbyPlaceCategory
+  distance String
+  icon     String?
+  order    Int                 @default(0)
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum NearbyPlaceCategory {
+  ATTRACTION
+  TRANSPORT
+  RESTAURANT
+}
+
+// --- Property Policy ---
+model PropertyPolicy {
+  id                 String  @id @default(uuid())
+  checkInTime        String  @default("15:00")
+  checkOutTime       String  @default("12:00")
+  cancellationPolicy String?
+  childrenPolicy     String?
+  petsPolicy         String? // "ALLOWED", "NOT_ALLOWED", "CONTACT_PROPERTY"
+  smokingPolicy      String? // "ALLOWED", "NOT_ALLOWED", "DESIGNATED_AREAS"
+  extraInfo          String?
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String   @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

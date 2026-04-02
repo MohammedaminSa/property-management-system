@@ -8,6 +8,12 @@ interface CreateReviewInput {
   content: string;
   rating: number;
   propertyId: string;
+  serviceRating?: number;
+  cleanlinessRating?: number;
+  locationRating?: number;
+  facilitiesRating?: number;
+  staffRating?: number;
+  valueRating?: number;
 }
 export const useCreateReview = () => {
   const qc = useQueryClient();
@@ -55,6 +61,36 @@ export const useGetReviewsQuery = ({
         `/properties/reviews/${propertyId}`
       );
 
+      return res.data;
+    },
+  });
+};
+
+export interface CategoryRatings {
+  service: number;
+  cleanliness: number;
+  location: number;
+  facilities: number;
+  staff: number;
+  value: number;
+}
+
+export const useGetCategoryRatingsQuery = ({
+  propertyId,
+}: {
+  propertyId: string;
+}) => {
+  return useQuery<{
+    propertyId: string;
+    categoryRatings: CategoryRatings;
+    reviewCount: number;
+    success: boolean;
+  }>({
+    queryKey: ["category-ratings", propertyId],
+    queryFn: async () => {
+      const res = await api.get(
+        `/properties/reviews/${propertyId}/category-ratings`
+      );
       return res.data;
     },
   });

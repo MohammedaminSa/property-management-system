@@ -16,6 +16,9 @@ import {
 import StaffsTab from "./staffs-tab";
 import RoomsTab from "./rooms-tab";
 import ImagesTab from "./images-tab";
+import HighlightsTab from "./highlights-tab";
+import NearbyPlacesTab from "./nearby-places-tab";
+import PoliciesTab from "./policies-tab";
 import { DashboardCard } from "@/components/shared/dashboard-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import Link from "next/link";
@@ -208,6 +211,9 @@ export default function PropertyView({ data }: { data: PropertyData }) {
           <TabsTrigger value="staff">Staff</TabsTrigger>
           <TabsTrigger value="brokers">Brokers</TabsTrigger>
           <TabsTrigger value="rooms">Rooms</TabsTrigger>
+          <TabsTrigger value="highlights">Highlights</TabsTrigger>
+          <TabsTrigger value="nearby-places">Nearby Places</TabsTrigger>
+          <TabsTrigger value="policies">Policies</TabsTrigger>
           <TabsTrigger value="bookings">Bookings</TabsTrigger>
           <TabsTrigger value="facilities">Facilities</TabsTrigger>
           <TabsTrigger value="images">Images</TabsTrigger>
@@ -303,6 +309,15 @@ export default function PropertyView({ data }: { data: PropertyData }) {
 
         {/* Rooms */}
         <RoomsTab propertyId={data.id} />
+
+        {/* Highlights */}
+        <HighlightsTab propertyId={data.id} />
+
+        {/* Nearby Places */}
+        <NearbyPlacesTab propertyId={data.id} />
+
+        {/* Policies */}
+        <PoliciesTab propertyId={data.id} />
 
         {/* Bookings */}
         <TabsContent value="bookings">
