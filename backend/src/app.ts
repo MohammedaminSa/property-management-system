@@ -14,8 +14,19 @@ const app = express();
 // ---------- Middleware ----------
 app.set("trust proxy", 1);
 
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
+
 const CLIENT_FRONTEND_URL = process.env.CLIENT_FRONTEND_URL;
 const ADMIN_FRONTEND_URL = process.env.ADMIN_FRONTEND_URL;
+
+console.log("Environment variables:");
+console.log("CLIENT_FRONTEND_URL:", CLIENT_FRONTEND_URL);
+console.log("ADMIN_FRONTEND_URL:", ADMIN_FRONTEND_URL);
+console.log("NODE_ENV:", process.env.NODE_ENV);
 
 const allowedOriginPatterns = [
   /^https:\/\/property-management-system[\w-]*\.vercel\.app$/,
@@ -60,6 +71,15 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
+
+// ---------- Routes ----------
+app.get("/api/test", (req, res) => {
+  res.json({ 
+    message: "Backend is working!", 
+    timestamp: new Date().toISOString(),
+    origin: req.headers.origin 
+  });
+});
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());
