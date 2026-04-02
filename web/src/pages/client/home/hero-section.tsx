@@ -110,7 +110,7 @@ const HeroSection = () => {
             >
               <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
               <span className="text-sm font-semibold bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
-                Experience Luxury Like Never Before
+                🌟 Your Dream Stay Awaits - Book Now! 🌟
               </span>
             </div>
 
