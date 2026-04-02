@@ -9,23 +9,6 @@ function HomePage() {
     <div className="min-h-screen bg-background">
       <HeroSection />
 
-      {/* Stats bar */}
-      <div className="bg-primary text-primary-foreground py-4">
-        <div className="c-px flex flex-wrap justify-center gap-8 md:gap-16 text-center">
-          {[
-            { value: "500+", label: "Properties" },
-            { value: "50+", label: "Cities" },
-            { value: "10K+", label: "Happy Guests" },
-            { value: "4.8★", label: "Avg Rating" },
-          ].map((s) => (
-            <div key={s.label}>
-              <p className="text-2xl font-bold">{s.value}</p>
-              <p className="text-xs text-primary-foreground/70">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <LocationsSection />
       <PropertiesSection />
       <PropertyStats />
