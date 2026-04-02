@@ -89,6 +89,17 @@ const HeroSection = () => {
                 </span>
               </button>
             </div>
+
+            {/* Auth Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <a href="/auth/login" className="bg-white text-primary px-8 py-3 rounded-full font-semibold text-base hover:bg-gray-100 transition-all duration-300 shadow-lg">
+                Sign In
+              </a>
+              
+              <a href="/auth/signup" className="bg-transparent text-white border-2 border-white px-8 py-3 rounded-full font-semibold text-base hover:bg-white hover:text-primary transition-all duration-300">
+                Register
+              </a>
+            </div>
           </div>
 
           {/* Search Card - Glassmorphism */}
