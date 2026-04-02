@@ -2,8 +2,10 @@
 import axios from "axios";
 const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
+const API_BASE_URL = "https://property-management-system-0uoy.onrender.com"; // Hardcoded temporarily
+
 export const api = axios.create({
-  baseURL: `${SERVER_BASE_URL}/api/v1`,
+  baseURL: `${API_BASE_URL}/api/v1`,
   headers: {
     "Content-Type": "application/json",
   },
