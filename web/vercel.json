@@ -1,4 +1,13 @@
 {
+  "version": 2,
+  "name": "property-management-client",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "env": {
+    "VITE_SERVER_BASE_URL": "@backend_url"
+  },
   "rewrites": [
     {
       "source": "/(.*)",

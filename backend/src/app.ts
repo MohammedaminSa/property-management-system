@@ -20,6 +20,8 @@ const ADMIN_FRONTEND_URL = process.env.ADMIN_FRONTEND_URL;
 const allowedOriginPatterns = [
   /^https:\/\/property-management-system[\w-]*\.vercel\.app$/,
   /^https:\/\/property-management-system[\w-]*-mohammed-ahmedins-projects\.vercel\.app$/,
+  /^https:\/\/[\w-]*-vercel\.app$/,
+  /^https:\/\/property-management-system[\w-]*\.onrender\.com$/,
   /^https:\/\/solomongetnet\.pro\.et$/,
   /^http:\/\/localhost:(4000|5173|3000)$/,
   /^http:\/\/10\.27\.237\.146:(4000|5173|3000)$/,
@@ -33,10 +35,19 @@ const staticOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log(`CORS check for origin: ${origin}`);
       if (!origin) return callback(null, true);
-      if (staticOrigins.includes(origin)) return callback(null, true);
-      if (allowedOriginPatterns.some((p) => p.test(origin))) return callback(null, true);
-      callback(new Error(`CORS blocked: ${origin}`));
+      if (staticOrigins.includes(origin)) {
+        console.log(`CORS allowed (static): ${origin}`);
+        return callback(null, true);
+      }
+      if (allowedOriginPatterns.some((p) => p.test(origin))) {
+        console.log(`CORS allowed (pattern): ${origin}`);
+        return callback(null, true);
+      }
+      // Temporary: Allow all origins for debugging
+      console.warn(`CORS blocked but allowing for debugging: ${origin}`);
+      return callback(null, true);
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,

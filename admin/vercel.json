@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "property-management-admin",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_SERVER_BASE_URL": "@backend_url"
+  }
+}
