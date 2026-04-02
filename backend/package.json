@@ -1,16 +1,16 @@
 {
-  "name": "Guest-House-Backend",
+  "name": "guest-house-backend",
   "version": "1.0.0",
   "main": "app.js",
   "engines": {
     "node": "22.x"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc",
-    "start": "tsc && node dist/app.js",
+    "build": "tsc",
+    "start": "node dist/app.js",
     "vercel-start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && npm run build",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",

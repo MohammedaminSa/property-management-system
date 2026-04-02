@@ -81,7 +81,7 @@ const PORT = process.env.PORT || 3000;
 // export default app
 // ---------- Start Server ----------
 app.listen(PORT as any, "0.0.0.0", () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🚀 The new version is running`);
   console.log(`🚀 Friday 13 - hmmmm`);
   console.log(`📖 Swagger Docs in here http://localhost:${PORT}/api-docs`);
