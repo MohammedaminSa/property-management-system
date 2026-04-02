@@ -14,7 +14,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden min-h-[600px]">
+    <div className="relative w-full overflow-hidden min-h-[600px]" id="hero-section">
       {/* Background with gradient overlay */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-purple-900/90 to-pink-900/85" />

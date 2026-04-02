@@ -33,7 +33,8 @@ export default {
     res.send({ token, user });
   }),
   signOut: tryCatch(async (req, res, next) => {
-    res.send("Signout done");
+    // Simple sign-out response - better-auth handles the actual session clearing
+    res.json({ success: true, message: "Sign out successful" });
   }),
   me: tryCatch(async (req, res, next) => {
     const session = await auth.api.getSession({
