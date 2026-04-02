@@ -8,6 +8,9 @@ const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
 
+  // Debug: Show what URL is being used
+  console.log('🔍 Backend URL:', import.meta.env.VITE_SERVER_BASE_URL);
+
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => setScrollY(window.scrollY);
