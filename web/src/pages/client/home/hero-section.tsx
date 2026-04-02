@@ -9,6 +9,20 @@ const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Add CSS keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(10deg);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     const handleScroll = () => setScrollY(window.scrollY);
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -18,6 +32,7 @@ const HeroSection = () => {
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
+      document.head.removeChild(style);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
     };
@@ -62,12 +77,12 @@ const HeroSection = () => {
         {floatingElements.map((element, index) => (
           <div
             key={index}
-            className="absolute text-white/20 animate-float"
+            className="absolute text-white/20"
             style={{
               left: `${element.x}%`,
               top: `${element.y}%`,
+              animation: `float ${element.duration}s ease-in-out infinite`,
               animationDelay: `${element.delay}s`,
-              animationDuration: `${element.duration}s`,
             }}
           >
             <div className="bg-white/10 backdrop-blur-sm rounded-full p-3 border border-white/20">
@@ -198,21 +213,6 @@ const HeroSection = () => {
 
       {/* Bottom Gradient Fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-
-      {/* Custom Styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(10deg);
-          }
-        }
-        .animate-float {
-          animation: float ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };
