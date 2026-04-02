@@ -1,5 +1,5 @@
 import { ChatBotContainer } from "@/components/shared/chatbot";
-import HeroSection from "./hero-section";
+import HeroNew from "./hero-new";
 import LocationsSection from "./locations-section";
 import PropertiesSection from "./properties-section";
 import { PropertyStats } from "./stats-section";
@@ -7,7 +7,7 @@ import { PropertyStats } from "./stats-section";
 function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      <HeroSection />
+      <HeroNew />
 
       <LocationsSection />
       <PropertiesSection />
