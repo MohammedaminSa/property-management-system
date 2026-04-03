@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Calendar, Globe, LogOut, Menu, Settings, User, Heart, HelpCircle } from "lucide-react";
+import { Calendar, LogOut, Menu, Settings, User, Heart, HelpCircle, Building2, Home, Palmtree, Castle, DoorOpen, Bed, TreePine, ChevronDown } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ModeToggle } from "../mode-toggle";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,19 @@ import { mainNavLinks } from "@/const/links";
 import { authClient } from "@/lib/auth-client";
 import { Avatar } from "../avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useClientAuth } from "@/hooks/use-client-auth";
+
+const propertyTypes = [
+  { label: "All Properties", type: null, icon: Building2 },
+  { label: "Hotels", type: "Hotel", icon: Building2 },
+  { label: "Apartments", type: "Apartment", icon: Home },
+  { label: "Resorts", type: "Resort", icon: Palmtree },
+  { label: "Villas", type: "Villa", icon: Castle },
+  { label: "Guest Houses", type: "Guest House", icon: DoorOpen },
+  { label: "Hostels", type: "Hostel", icon: Bed },
+  { label: "Lodges", type: "Lodge", icon: TreePine },
+];
 
 export function Header() {
   const location = useLocation();
@@ -19,6 +31,14 @@ export function Header() {
   const { data, isPending } = authClient.useSession();
   const { signOut, isAuthenticated } = useClientAuth();
   const navigate = useNavigate();
+
+  const handlePropertyTypeClick = (type: string | null) => {
+    if (type === null) {
+      navigate("/properties");
+    } else {
+      navigate(`/properties?propertyTypes=["${type}"]`);
+    }
+  };
 
   const UserMenu = () => (
     <Popover>
@@ -61,20 +81,56 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1 flex-1">
-            {mainNavLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={cn(
-                  "text-sm font-medium px-3 py-2 rounded-lg transition-colors hover:bg-muted",
-                  location.pathname === link.href
-                    ? "text-primary bg-primary/5"
-                    : "text-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {mainNavLinks.map((link) => {
+              if (link.href === "/properties") {
+                return (
+                  <DropdownMenu key={link.href}>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className={cn(
+                          "text-sm font-medium px-3 py-2 rounded-lg transition-colors hover:bg-muted flex items-center gap-1",
+                          location.pathname === link.href
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground"
+                        )}
+                      >
+                        {link.label}
+                        <ChevronDown className="w-3 h-3" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                      {propertyTypes.map((propertyType) => {
+                        const Icon = propertyType.icon;
+                        return (
+                          <DropdownMenuItem
+                            key={propertyType.label}
+                            onClick={() => handlePropertyTypeClick(propertyType.type)}
+                            className="cursor-pointer"
+                          >
+                            <Icon className="w-4 h-4 mr-2" />
+                            {propertyType.label}
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                );
+              }
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={cn(
+                    "text-sm font-medium px-3 py-2 rounded-lg transition-colors hover:bg-muted",
+                    location.pathname === link.href
+                      ? "text-primary bg-primary/5"
+                      : "text-foreground"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right side */}

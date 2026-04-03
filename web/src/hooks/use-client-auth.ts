@@ -39,12 +39,17 @@ export function useClientAuth() {
       if (error) {
         throw error;
       }
+      // Clear local state
       dispatch(logoutUser());
+      // Redirect to home page after successful logout
+      window.location.href = "/";
     } catch (err) {
       console.error("signOut failed:", err);
       dispatch(setStatus({ status: "error" }));
-      // Still clear local state
+      // Still clear local state even on error
       dispatch(logoutUser());
+      // Redirect to home page even on error to ensure user is logged out
+      window.location.href = "/";
     }
   }, [dispatch]);
 
