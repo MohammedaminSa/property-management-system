@@ -245,6 +245,9 @@ export default function PropertiesPage() {
     }
   });
 
+  console.log("🔍 Frontend filters being sent:", filters);
+  console.log("🔍 All search params:", Object.fromEntries(searchParams.entries()));
+
   const sort = searchParams.get("sort");
 
   const hasActiveFilters = useMemo(() => {
