@@ -168,7 +168,6 @@ export const useGetProperties = (
         maxPrice: input.filters?.maxPrice || undefined,
         city: input.filters?.city || undefined,
         subcity: input.filters?.subcity || undefined,
-        type: input.filters?.propertyTypes?.[0] || input.filters?.type || undefined,
         propertyTypes: input.filters?.propertyTypes,
         search: input.filters?.search || undefined,
         page: input.page,

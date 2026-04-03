@@ -13,20 +13,9 @@ const trustedOrigins = [
   "http://localhost:5173",
   "https://solomongetnet.pro.et",
   "https://www.solomongetnet.pro.et",
-  "https://property-admin-web.vercel.app",
-  "https://property-booking-project-ui9i.vercel.app",
-  "https://property-management-system-s61h-f20us0qvf.vercel.app",
-  "https://property-management-system-6wk84gdqk-mohammed-ahmedins-projects.vercel.app",
-  "https://property-management-system-ifoqipqs3-mohammed-ahmedins-projects.vercel.app",
-  "https://property-management-system-s61h-2wxy4q7rh.vercel.app",
-  "https://property-management-system-s61h-i1fy4jr1a.vercel.app",
-  "https://property-management-system-if6x3e54y-mohammed-ahmedins-projects.vercel.app",
-  "https://property-management-system-ifoqipqs3-mohammed-ahmedins-projects.vercel.app",
-  "https://property-management-system-s61h.vercel.app",
-  "https://property-management-system-cyan.vercel.app",
-  "https://property-management-system-dyt3-10xf48ayq.vercel.app",
-  "https://property-management-system-dyt3-dcpw1jlz2.vercel.app",
-  "https://property-management-system-4lhv1-g1y02p1e3.vercel.app",
+  "https://property-management-system-4lhv1-g1y02p1e3.vercel.app", // Your current live URL
+  "https://property-management-system-4lhv1.vercel.app", // Clean production URL
+  "https://property-management-system-4lhv1-*.vercel.app", // Preview deployments wildcard
   "myapp://",
   ...(CLIENT_FRONTEND_URL ? [CLIENT_FRONTEND_URL] : []),
   ...(ADMIN_FRONTEND_URL ? [ADMIN_FRONTEND_URL] : []),
