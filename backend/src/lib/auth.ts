@@ -25,6 +25,7 @@ const trustedOrigins = [
   "https://property-management-system-s61h.vercel.app",
   "https://property-management-system-cyan.vercel.app",
   "https://property-management-system-dyt3-10xf48ayq.vercel.app",
+  "https://property-management-system-dyt3-dcpw1jlz2.vercel.app",
   "myapp://",
   ...(CLIENT_FRONTEND_URL ? [CLIENT_FRONTEND_URL] : []),
   ...(ADMIN_FRONTEND_URL ? [ADMIN_FRONTEND_URL] : []),

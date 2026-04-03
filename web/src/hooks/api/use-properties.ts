@@ -172,6 +172,7 @@ export const useGetProperties = (
             city: input.filters?.city || undefined,
             subcity: input.filters?.subcity || undefined,
             type: input.filters?.type || undefined,
+            propertyTypes: input.filters?.propertyTypes,
             search: input.filters?.search || undefined,
             page: input.page,
             limit: input.limit,
