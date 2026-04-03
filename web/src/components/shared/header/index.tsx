@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Calendar, LogOut, Menu, Settings, User, Heart, HelpCircle, Building2, Home, Palmtree, Castle, DoorOpen, Bed, TreePine, ChevronDown } from "lucide-react";
@@ -15,14 +15,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useClientAuth } from "@/hooks/use-client-auth";
 
 const propertyTypes = [
-  { label: "All Properties", type: null, icon: Building2 },
-  { label: "Hotels", type: "Hotel", icon: Building2 },
-  { label: "Apartments", type: "Apartment", icon: Home },
-  { label: "Resorts", type: "Resort", icon: Palmtree },
-  { label: "Villas", type: "Villa", icon: Castle },
-  { label: "Guest Houses", type: "Guest House", icon: DoorOpen },
-  { label: "Hostels", type: "Hostel", icon: Bed },
-  { label: "Lodges", type: "Lodge", icon: TreePine },
+  { label: "All Properties", type: null, icon: Building2, value: null },
+  { label: "Hotels", type: "HOTEL", icon: Building2, value: "HOTEL" },
+  { label: "Apartments", type: "APARTMENT", icon: Home, value: "APARTMENT" },
+  { label: "Resorts", type: "RESORT", icon: Palmtree, value: "RESORT" },
+  { label: "Villas", type: "VILLA", icon: Castle, value: "VILLA" },
+  { label: "Guest Houses", type: "GUEST_HOUSE", icon: DoorOpen, value: "GUEST_HOUSE" },
+  { label: "Hostels", type: "HOSTEL", icon: Bed, value: "HOSTEL" },
+  { label: "Lodges", type: "LODGE", icon: TreePine, value: "LODGE" },
 ];
 
 export function Header() {
@@ -32,11 +32,38 @@ export function Header() {
   const { signOut, isAuthenticated } = useClientAuth();
   const navigate = useNavigate();
 
+  // Parse current property type from URL
+  const currentPropertyType = useMemo(() => {
+    if (!location.pathname.includes("/properties")) return null;
+    const params = new URLSearchParams(location.search);
+    try {
+      const types = JSON.parse(params.get("propertyTypes") || "[]");
+      return types.length === 1 ? types[0] : null;
+    } catch {
+      return null;
+    }
+  }, [location]);
+
+  // Dynamic label for Properties navigation
+  const propertyNavLabel = useMemo(() => {
+    if (!currentPropertyType) return "Properties";
+    const typeLabels: Record<string, string> = {
+      HOTEL: "Hotels",
+      APARTMENT: "Apartments",
+      RESORT: "Resorts",
+      VILLA: "Villas",
+      GUEST_HOUSE: "Guest Houses",
+      HOSTEL: "Hostels",
+      LODGE: "Lodges"
+    };
+    return typeLabels[currentPropertyType] || "Properties";
+  }, [currentPropertyType]);
+
   const handlePropertyTypeClick = (type: string | null) => {
     if (type === null) {
       navigate("/properties");
     } else {
-      navigate(`/properties?propertyTypes=["${type}"]`);
+      navigate(`/properties?propertyTypes=${JSON.stringify([type])}`);
     }
   };
 
@@ -94,18 +121,22 @@ export function Header() {
                             : "text-foreground"
                         )}
                       >
-                        {link.label}
+                        {propertyNavLabel}
                         <ChevronDown className="w-3 h-3" />
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="w-48">
                       {propertyTypes.map((propertyType) => {
                         const Icon = propertyType.icon;
+                        const isActive = propertyType.value === currentPropertyType || (propertyType.value === null && currentPropertyType === null);
                         return (
                           <DropdownMenuItem
                             key={propertyType.label}
-                            onClick={() => handlePropertyTypeClick(propertyType.type)}
-                            className="cursor-pointer"
+                            onClick={() => handlePropertyTypeClick(propertyType.value)}
+                            className={cn(
+                              "cursor-pointer",
+                              isActive && "bg-primary/10 text-primary font-medium"
+                            )}
                           >
                             <Icon className="w-4 h-4 mr-2" />
                             {propertyType.label}

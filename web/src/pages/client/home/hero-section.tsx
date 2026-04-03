@@ -49,25 +49,8 @@ const HeroSection = () => {
         </p>
       </div>
 
-      {/* Floating Search Box with Left-Right Animation */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @keyframes float-lr {
-            0%   { transform: translateX(calc(-50vw + 50%)); }
-            50%  { transform: translateX(calc(50vw - 50%)); }
-            100% { transform: translateX(calc(-50vw + 50%)); }
-          }
-          .search-float {
-            animation: float-lr 6s ease-in-out infinite;
-          }
-          .search-float:hover,
-          .search-float:focus-within {
-            animation-play-state: paused;
-          }
-        `
-      }} />
-
-      <div className="relative z-10 w-[95%] md:w-[780px] lg:w-[860px] search-float">
+      {/* Centered Search Box */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4">
         <FilterTab />
       </div>
     </div>

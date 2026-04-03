@@ -4,6 +4,7 @@ import { PropertyCard } from "@/components/shared/property-card";
 import type { PropertyDataResponse } from "@/hooks/api/use-properties";
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
 interface Props {
   data: PropertyDataResponse[];
@@ -25,6 +26,70 @@ const SORT_TABS = [
 const DataContainer = ({ data, pagination, locationParam = "", totalItems = 0 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeSort = searchParams.get("sortField") || "createdAt";
+
+  // Parse selected property types from URL
+  const selectedTypes = useMemo(() => {
+    try {
+      const param = searchParams.get("propertyTypes");
+      return param ? JSON.parse(param) : [];
+    } catch {
+      return [];
+    }
+  }, [searchParams]);
+
+  // Generate dynamic heading based on selected property types
+  const heading = useMemo(() => {
+    if (selectedTypes.length === 0) {
+      return locationParam ? `Hotels in ${locationParam}` : "All Properties";
+    }
+    if (selectedTypes.length === 1) {
+      const typeLabels: Record<string, string> = {
+        HOTEL: "Hotels",
+        APARTMENT: "Apartments",
+        RESORT: "Resorts",
+        VILLA: "Villas",
+        GUEST_HOUSE: "Guest Houses",
+        HOSTEL: "Hostels",
+        LODGE: "Lodges"
+      };
+      const label = typeLabels[selectedTypes[0]] || "Properties";
+      return locationParam ? `${label} in ${locationParam}` : label;
+    }
+    if (selectedTypes.length === 2) {
+      const typeLabels: Record<string, string> = {
+        HOTEL: "Hotels",
+        APARTMENT: "Apartments",
+        RESORT: "Resorts",
+        VILLA: "Villas",
+        GUEST_HOUSE: "Guest Houses",
+        HOSTEL: "Hostels",
+        LODGE: "Lodges"
+      };
+      const label1 = typeLabels[selectedTypes[0]] || selectedTypes[0];
+      const label2 = typeLabels[selectedTypes[1]] || selectedTypes[1];
+      return locationParam ? `${label1} & ${label2} in ${locationParam}` : `${label1} & ${label2}`;
+    }
+    return locationParam ? `Multiple Property Types in ${locationParam}` : "Multiple Property Types";
+  }, [selectedTypes, locationParam]);
+
+  // Generate dynamic count text
+  const countText = useMemo(() => {
+    const count = totalItems || data.length;
+    if (selectedTypes.length === 1) {
+      const typeLabels: Record<string, string> = {
+        HOTEL: "hotels",
+        APARTMENT: "apartments",
+        RESORT: "resorts",
+        VILLA: "villas",
+        GUEST_HOUSE: "guest houses",
+        HOSTEL: "hostels",
+        LODGE: "lodges"
+      };
+      const label = typeLabels[selectedTypes[0]] || "properties";
+      return `${count} ${label} found${locationParam ? ` in ${locationParam}` : ""}`;
+    }
+    return `${count} properties found${locationParam ? ` in ${locationParam}` : ""}`;
+  }, [selectedTypes, totalItems, data.length, locationParam]);
 
   // Client-side price sort (backend can't sort by min room price easily)
   const sortedData = [...data].sort((a, b) => {
@@ -64,7 +129,7 @@ const DataContainer = ({ data, pagination, locationParam = "", totalItems = 0 }:
       <div className="flex-1 min-w-0">
         {/* Heading */}
         <h2 className="text-2xl font-bold mb-4">
-          {locationParam ? `Hotels in ${locationParam}` : "All Properties"}
+          {heading}
         </h2>
 
         {/* Info panel — only when location is set */}
@@ -108,7 +173,7 @@ const DataContainer = ({ data, pagination, locationParam = "", totalItems = 0 }:
 
         {/* Count */}
         <p className="text-sm text-muted-foreground mb-4">
-          {totalItems || data.length} properties found{locationParam ? ` in ${locationParam}` : ""}
+          {countText}
         </p>
 
         {/* Cards */}

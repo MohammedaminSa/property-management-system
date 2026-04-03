@@ -234,7 +234,7 @@ export default function PropertiesPage() {
   const filters: any = {};
 
   searchParams.forEach((value, key) => {
-    if (key === "facilityNames") {
+    if (key === "facilityNames" || key === "propertyTypes") {
       try { filters[key as keyof PropertyFilters] = JSON.parse(value); } catch { filters[key as any] = value; }
     } else if (["minRating","maxRating","minPrice","maxPrice"].includes(key)) {
       filters[key] = Number(value);
