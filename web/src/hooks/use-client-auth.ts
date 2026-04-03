@@ -33,14 +33,25 @@ export function useClientAuth() {
 
   /** Sign‑out both locally and via Better Auth client */
   const signOut = useCallback(async () => {
+    console.log("🚪 Starting sign-out process...");
     dispatch(setStatus({ status: "loading" }));
+    
     try {
+      // Check current session before sign-out
+      const { data: currentSession } = await authClient.getSession();
+      console.log("📋 Current session before sign-out:", currentSession);
+      
       // Clear better-auth session first
-      await authClient.signOut({
+      const signOutResult = await authClient.signOut({
         fetchOptions: {
           credentials: "include",
         },
       });
+      console.log("✅ Sign-out result:", signOutResult);
+      
+      // Check session after sign-out
+      const { data: sessionAfter } = await authClient.getSession();
+      console.log("📋 Session after sign-out:", sessionAfter);
       
       // Clear local state
       dispatch(logoutUser());
@@ -53,15 +64,20 @@ export function useClientAuth() {
       document.cookie = "better-auth.session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       document.cookie = "better-auth.session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       
-      // Redirect to home page after successful logout
+      console.log("🧹 Local state and cookies cleared");
+      
+      // Force redirect to home page after successful logout
+      console.log("🔄 Redirecting to home page...");
       window.location.href = "/";
     } catch (err) {
-      console.error("signOut failed:", err);
+      console.error("❌ signOut failed:", err);
       dispatch(setStatus({ status: "error" }));
+      
       // Still clear local state even on error
       dispatch(logoutUser());
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
+      
       // Redirect to home page even on error to ensure user is logged out
       window.location.href = "/";
     }

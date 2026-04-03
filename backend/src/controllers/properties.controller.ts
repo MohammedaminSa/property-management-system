@@ -152,6 +152,7 @@ export default {
         subcity,
         country,
         type,
+        accessType,
         propertyTypes,
         search,
         page,
@@ -165,6 +166,15 @@ export default {
         minRating,
         maxRating,
       } = req.query;
+
+      console.log("🔍 Query parameters received:", {
+        type,
+        accessType,
+        propertyTypes,
+        city,
+        subcity,
+        search,
+      });
 
       // Pagination setup
       const pageNumber = Math.max(parseInt(page as string, 10) || 1, 1);
@@ -190,8 +200,8 @@ export default {
       }
 
       // 🏠 Access Type filter (PRIVATE / SHARED)
-      if (type) {
-        filters.AND.push({ accessType: (type as string).toUpperCase() });
+      if (accessType) {
+        filters.AND.push({ accessType: (accessType as string).toUpperCase() });
       }
 
       // 🏨 Property Type Categories filter (HOTEL, APARTMENT, RESORT, etc.)
@@ -214,11 +224,14 @@ export default {
       if (type && !propertyTypes) {
         const typeValue = (type as string).toUpperCase();
         const validTypes = ["HOTEL", "APARTMENT", "RESORT", "VILLA", "GUEST_HOUSE", "HOSTEL", "LODGE"];
+        console.log("🏨 Processing type filter:", { type, typeValue, validTypes: validTypes.includes(typeValue) });
         if (validTypes.includes(typeValue)) {
           filters.AND.push({
             type: typeValue,
           });
-          console.log('Single Type Filter:', typeValue);
+          console.log('✅ Single Type Filter applied:', typeValue);
+        } else {
+          console.log('❌ Invalid type value:', typeValue);
         }
       }
 
