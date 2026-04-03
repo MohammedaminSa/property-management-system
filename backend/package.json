@@ -17,7 +17,8 @@
     "db:migrate": "prisma migrate dev",
     "prisma:migrate": "prisma migrate deploy",
     "deploy": "vercel --prod",
-    "seed": "ts-node ./src/seed/index.ts"
+    "seed": "ts-node ./src/seed/index.ts",
+    "fix-property-types": "tsx src/scripts/fix-property-types.ts"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

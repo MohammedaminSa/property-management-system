@@ -189,15 +189,17 @@ export default {
         });
       }
 
-      // 🏠 Type filter (PRIVATE / SHARED)
+      // 🏠 Access Type filter (PRIVATE / SHARED)
       if (type) {
-        filters.AND.push({ type: (type as string).toUpperCase() });
+        filters.AND.push({ accessType: (type as string).toUpperCase() });
       }
 
       // 🏨 Property Type Categories filter (HOTEL, APARTMENT, RESORT, etc.)
       if (propertyTypes) {
         try {
           const typesArray = JSON.parse(propertyTypes as string);
+          console.log('Property Types Filter:', propertyTypes);
+          console.log('Parsed Types Array:', typesArray);
           if (Array.isArray(typesArray) && typesArray.length > 0) {
             filters.AND.push({
               type: { in: typesArray },
