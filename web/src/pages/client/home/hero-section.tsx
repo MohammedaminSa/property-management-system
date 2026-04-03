@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import FilterTab from "./_components/filter-tab";
-import { Search, MapPin, Star, Users, ArrowRight, Sparkles, Globe, Shield } from "lucide-react";
+import { Search, MapPin, Star, Calendar, Users, ArrowRight, Sparkles, Globe, Heart, Shield } from "lucide-react";
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -14,7 +14,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden min-h-[600px]" id="hero-section">
+    <div className="relative w-full overflow-hidden min-h-[600px]">
       {/* Background with gradient overlay */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-purple-900/90 to-pink-900/85" />
@@ -53,7 +53,7 @@ const HeroSection = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
               <Sparkles className="w-4 h-4 text-yellow-300" />
-              <span className="text-sm font-medium">🔥 FINAL HERO UPDATE - Experience Luxury Like Never Before 🔥</span>
+              <span className="text-sm font-medium">Experience Luxury Like Never Before</span>
             </div>
 
             {/* Main Heading with Gradient */}
@@ -73,6 +73,21 @@ const HeroSection = () => {
               Book with confidence and create memories that last a lifetime.
             </p>
 
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mb-12">
+              {[
+                "Best Price Guarantee",
+                "24/7 Customer Support", 
+                "Free Cancellation",
+                "Verified Properties"
+              ].map((trust, index) => (
+                <div key={index} className="flex items-center gap-2 text-white/70 text-sm">
+                  <div className="w-1 h-1 bg-green-400 rounded-full" />
+                  {trust}
+                </div>
+              ))}
+            </div>
+
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button className="group relative bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-2xl hover:shadow-yellow-500/25 transition-all duration-300 hover:scale-105">
@@ -80,6 +95,7 @@ const HeroSection = () => {
                   Start Your Journey
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               
               <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
@@ -88,17 +104,6 @@ const HeroSection = () => {
                   Browse Properties
                 </span>
               </button>
-            </div>
-
-            {/* Auth Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <a href="/auth/login" className="bg-white text-primary px-8 py-3 rounded-full font-semibold text-base hover:bg-gray-100 transition-all duration-300 shadow-lg">
-                Sign In
-              </a>
-              
-              <a href="/auth/signup" className="bg-transparent text-white border-2 border-white px-8 py-3 rounded-full font-semibold text-base hover:bg-white hover:text-primary transition-all duration-300">
-                Register
-              </a>
             </div>
           </div>
 
