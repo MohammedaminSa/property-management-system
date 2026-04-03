@@ -163,31 +163,33 @@ export const useGetProperties = (
     retry: 2,
     retryDelay: 3000,
     queryFn: async () => {
+      const params = {
+        minPrice: input.filters?.minPrice || undefined,
+        maxPrice: input.filters?.maxPrice || undefined,
+        city: input.filters?.city || undefined,
+        subcity: input.filters?.subcity || undefined,
+        type: input.filters?.propertyTypes?.[0] || input.filters?.type || undefined,
+        propertyTypes: input.filters?.propertyTypes,
+        search: input.filters?.search || undefined,
+        page: input.page,
+        limit: input.limit,
+        facilityNames: input.filters?.facilityNames,
+        categoryId: input.filters?.categoryId,
+        location: input.filters?.location,
+        sortDirection: input.sortDirection,
+        sortField: input.filters?.sortField,
+        minRating: input.filters?.minRating || undefined,
+        maxRating: input.filters?.maxRating || undefined,
+        minReviewScore: (input.filters as any)?.minReviewScore || undefined,
+        maxReviewScore: (input.filters as any)?.maxReviewScore || undefined,
+        hasRoomsAvailable: input.filters?.hasRoomsAvailable || undefined,
+      };
+      
+      console.log("🚀 API CALL - Sending params:", params);
+      
       const res = await api.get<PaginatedPropertyDataResponse>(
         "/properties",
-        {
-          params: {
-            minPrice: input.filters?.minPrice || undefined,
-            maxPrice: input.filters?.maxPrice || undefined,
-            city: input.filters?.city || undefined,
-            subcity: input.filters?.subcity || undefined,
-            type: input.filters?.type || undefined,
-            propertyTypes: input.filters?.propertyTypes,
-            search: input.filters?.search || undefined,
-            page: input.page,
-            limit: input.limit,
-            facilityNames: input.filters?.facilityNames,
-            categoryId: input.filters?.categoryId,
-            location: input.filters?.location,
-            sortDirection: input.sortDirection,
-            sortField: input.filters?.sortField,
-            minRating: input.filters?.minRating || undefined,
-            maxRating: input.filters?.maxRating || undefined,
-            minReviewScore: (input.filters as any)?.minReviewScore || undefined,
-            maxReviewScore: (input.filters as any)?.maxReviewScore || undefined,
-            hasRoomsAvailable: input.filters?.hasRoomsAvailable || undefined,
-          },
-        }
+        { params }
       );
       return res.data;
     },

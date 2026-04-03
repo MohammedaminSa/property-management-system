@@ -132,13 +132,19 @@ export function useClientAuth() {
 
   /** On mount: if token exists, attempt to refresh/fetch session */
   useEffect(() => {
-    if (token) {
-      void fetchUser();
-    } else {
-      // no token, ensure cleared
-      dispatch(logoutUser());
-    }
-  }, [token, fetchUser, dispatch]);
+    // DISABLED: Don't automatically sign in on app load
+    // User should explicitly sign in
+    
+    // if (token) {
+    //   void fetchUser();
+    // } else {
+    //   // no token, ensure cleared
+    //   dispatch(logoutUser());
+    // }
+    
+    // Always start logged out
+    dispatch(logoutUser());
+  }, [dispatch]);
 
   return {
     user,
