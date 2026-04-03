@@ -3,6 +3,7 @@ import type { Room } from "./room.types";
 
 // ---------------- Property Types ----------------
 export type PropertyType = "SHARED" | "PRIVATE" | "ENTIRE";
+export type PropertyCategory = "HOTEL" | "APARTMENT" | "RESORT" | "VILLA" | "GUEST_HOUSE" | "HOSTEL" | "LODGE";
 export type PropertyStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 // ---------------- Main Property Interface ----------------
@@ -89,6 +90,7 @@ export interface PropertyFilters {
   country?: string;
   categoryId?: string;
   type?: string;
+  propertyTypes?: string[];
   minRating?: number;
   maxRating?: number;
   minPrice?: number;

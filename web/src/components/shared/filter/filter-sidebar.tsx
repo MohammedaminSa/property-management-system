@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, RotateCcw } from "lucide-react";
+import { ChevronDown, ChevronUp, RotateCcw, Building2, Home, Palmtree, Castle, DoorOpen, Bed, TreePine } from "lucide-react";
 import { FaStar } from "react-icons/fa";
 import type { PropertyFilters } from "@/types/property.types";
 import CitySubcityFilter from "./city-filter";
@@ -13,6 +13,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const FACILITIES = ["WiFi", "Kitchen", "Air Conditioning", "Heating", "Parking", "Washer", "Dryer", "TV", "Pool", "Gym", "Breakfast", "Airport Transfer"];
 const PROPERTY_TYPES = ["Shared", "Private", "Entire"];
+const PROPERTY_TYPE_CATEGORIES = [
+  { value: "HOTEL", label: "Hotel", icon: Building2 },
+  { value: "APARTMENT", label: "Apartment", icon: Home },
+  { value: "RESORT", label: "Resort", icon: Palmtree },
+  { value: "VILLA", label: "Villa", icon: Castle },
+  { value: "GUEST_HOUSE", label: "Guest House", icon: DoorOpen },
+  { value: "HOSTEL", label: "Hostel", icon: Bed },
+  { value: "LODGE", label: "Lodge", icon: TreePine },
+];
 const STAR_RATINGS = [5, 4, 3, 2, 1];
 const REVIEW_SCORES = [
   { label: "Excellent (5)", min: 5, max: 5 },
@@ -163,6 +172,40 @@ export function FilterSidebar() {
                   <span className="text-sm">{t}</span>
                 </label>
               ))}
+            </div>
+          </Section>
+
+          {/* Property Type Category */}
+          <Section title="Property Category">
+            <div className="space-y-2">
+              {PROPERTY_TYPE_CATEGORIES.map((category) => {
+                const Icon = category.icon;
+                const currentTypes: string[] = (() => {
+                  try {
+                    const param = searchParams.get("propertyTypes");
+                    return param ? JSON.parse(param) : [];
+                  } catch {
+                    return [];
+                  }
+                })();
+                const isChecked = currentTypes.includes(category.value);
+                
+                return (
+                  <label key={category.value} className="flex items-center gap-2 cursor-pointer group">
+                    <Checkbox
+                      checked={isChecked}
+                      onCheckedChange={(checked) => {
+                        const updated = checked
+                          ? [...currentTypes, category.value]
+                          : currentTypes.filter((t) => t !== category.value);
+                        applyFilter("propertyTypes", updated.length > 0 ? updated : undefined);
+                      }}
+                    />
+                    <Icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    <span className="text-sm">{category.label}</span>
+                  </label>
+                );
+              })}
             </div>
           </Section>
 

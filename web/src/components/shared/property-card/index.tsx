@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Heart, Star } from "lucide-react";
+import { MapPin, Heart, Star, Building2, Home, Palmtree, Castle, DoorOpen, Bed, TreePine } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { PropertyDataResponse } from "@/hooks/api/use-properties";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -32,6 +32,36 @@ export function PropertyCard({ data, view = "horizontal", distance }: PropertyCa
   // Star count derived from rating (1-5)
   const starCount = averageRating ? Math.round(averageRating) : 0;
 
+  // Property type icon mapping
+  const getPropertyTypeIcon = (propertyType: string) => {
+    const iconMap: Record<string, any> = {
+      HOTEL: Building2,
+      APARTMENT: Home,
+      RESORT: Palmtree,
+      VILLA: Castle,
+      GUEST_HOUSE: DoorOpen,
+      HOSTEL: Bed,
+      LODGE: TreePine,
+    };
+    return iconMap[propertyType] || Building2;
+  };
+
+  const getPropertyTypeLabel = (propertyType: string) => {
+    const labelMap: Record<string, string> = {
+      HOTEL: "Hotel",
+      APARTMENT: "Apartment",
+      RESORT: "Resort",
+      VILLA: "Villa",
+      GUEST_HOUSE: "Guest House",
+      HOSTEL: "Hostel",
+      LODGE: "Lodge",
+    };
+    return labelMap[propertyType] || propertyType;
+  };
+
+  const PropertyTypeIcon = getPropertyTypeIcon(type || "HOTEL");
+  const propertyTypeLabel = getPropertyTypeLabel(type || "HOTEL");
+
   const ImageCarousel = ({ height }: { height: string }) => (
     <div className={cn("relative w-full overflow-hidden", height)}>
       <Carousel className="w-full h-full">
@@ -52,8 +82,11 @@ export function PropertyCard({ data, view = "horizontal", distance }: PropertyCa
       >
         <Heart className={cn("w-4 h-4", saved ? "fill-red-500 text-red-500" : "text-gray-600")} />
       </button>
-      <div className="absolute top-3 left-3">
-        <Badge className="text-xs font-medium">{type || "Property"}</Badge>
+      <div className="absolute top-3 left-3 flex items-center gap-1.5">
+        <Badge className="text-xs font-medium flex items-center gap-1">
+          <PropertyTypeIcon className="w-3 h-3" />
+          {propertyTypeLabel}
+        </Badge>
       </div>
     </div>
   );
@@ -171,7 +204,13 @@ export function PropertyCard({ data, view = "horizontal", distance }: PropertyCa
       {/* ── Middle: details ── */}
       <div className="flex-1 p-4 flex flex-col justify-between min-w-0 border-r border-border">
         <div>
-          <h3 className="font-bold text-base md:text-lg line-clamp-1 text-primary hover:underline mb-1">{name}</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-bold text-base md:text-lg line-clamp-1 text-primary hover:underline">{name}</h3>
+            <Badge variant="secondary" className="text-xs font-medium flex items-center gap-1 shrink-0">
+              <PropertyTypeIcon className="w-3 h-3" />
+              {propertyTypeLabel}
+            </Badge>
+          </div>
 
           {/* Stars */}
           {starCount > 0 && (

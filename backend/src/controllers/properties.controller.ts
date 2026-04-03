@@ -152,6 +152,7 @@ export default {
         subcity,
         country,
         type,
+        propertyTypes,
         search,
         page,
         limit,
@@ -191,6 +192,20 @@ export default {
       // 🏠 Type filter (PRIVATE / SHARED)
       if (type) {
         filters.AND.push({ type: (type as string).toUpperCase() });
+      }
+
+      // 🏨 Property Type Categories filter (HOTEL, APARTMENT, RESORT, etc.)
+      if (propertyTypes) {
+        try {
+          const typesArray = JSON.parse(propertyTypes as string);
+          if (Array.isArray(typesArray) && typesArray.length > 0) {
+            filters.AND.push({
+              type: { in: typesArray },
+            });
+          }
+        } catch (error) {
+          console.error("Failed to parse propertyTypes:", error);
+        }
       }
 
       // 💰 Price range — filter by average room price
