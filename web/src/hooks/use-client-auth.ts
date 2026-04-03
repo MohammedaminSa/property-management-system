@@ -35,12 +35,24 @@ export function useClientAuth() {
   const signOut = useCallback(async () => {
     dispatch(setStatus({ status: "loading" }));
     try {
-      const { error } = await authClient.signOut();
-      if (error) {
-        throw error;
-      }
+      // Clear better-auth session first
+      await authClient.signOut({
+        fetchOptions: {
+          credentials: "include",
+        },
+      });
+      
       // Clear local state
       dispatch(logoutUser());
+      
+      // Clear any stored tokens or session data
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+      
+      // Clear better-auth cookies manually if needed
+      document.cookie = "better-auth.session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "better-auth.session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      
       // Redirect to home page after successful logout
       window.location.href = "/";
     } catch (err) {
@@ -48,6 +60,8 @@ export function useClientAuth() {
       dispatch(setStatus({ status: "error" }));
       // Still clear local state even on error
       dispatch(logoutUser());
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       // Redirect to home page even on error to ensure user is logged out
       window.location.href = "/";
     }

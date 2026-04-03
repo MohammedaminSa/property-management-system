@@ -210,6 +210,18 @@ export default {
         }
       }
 
+      // Support singular 'type' parameter for Property Category (e.g., ?type=HOTEL)
+      if (type && !propertyTypes) {
+        const typeValue = (type as string).toUpperCase();
+        const validTypes = ["HOTEL", "APARTMENT", "RESORT", "VILLA", "GUEST_HOUSE", "HOSTEL", "LODGE"];
+        if (validTypes.includes(typeValue)) {
+          filters.AND.push({
+            type: typeValue,
+          });
+          console.log('Single Type Filter:', typeValue);
+        }
+      }
+
       // 💰 Price range — filter by average room price
       if (min > 0 || max < 100000) {
         filters.AND.push({
