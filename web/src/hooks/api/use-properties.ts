@@ -203,10 +203,19 @@ export const useGetSingleProperty = ({
   return useQuery<GuestDetailHouseResponse>({
     queryKey: ["hotel", propertyId],
     queryFn: async () => {
-      const res = await api.get<GuestDetailHouseResponse>(
-        `/properties/${propertyId}`
-      );
-      return res.data;
+      console.log("🔍 Fetching property with ID:", propertyId);
+      try {
+        const res = await api.get<GuestDetailHouseResponse>(
+          `/properties/${propertyId}`
+        );
+        console.log("✅ Property fetched successfully:", res.data);
+        return res.data;
+      } catch (error: any) {
+        console.error("❌ Error fetching property:", error);
+        console.error("❌ Error response:", error.response?.data);
+        console.error("❌ Error status:", error.response?.status);
+        throw error;
+      }
     },
   });
 };
