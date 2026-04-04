@@ -336,37 +336,39 @@ export default {
       }
 
       // 📄 Total count for pagination
-      const totalItems = await prisma.property.count({
-        where: filters.AND.length > 0 ? filters : undefined,
-      });
-      const totalPages = Math.ceil(totalItems / pageSize);
-      const hasMore = pageNumber < totalPages;
-
       // 📦 Fetch paginated results
-      const properties = await prisma.property.findMany({
-        where: filters.AND.length > 0 ? filters : undefined,
-        include: {
-          location: true,
-          about: true,
-          images: true,
-          facilities: true,
-          rooms: {
-            select: {
-              id: true,
-              name: true,
-              price: true,
-              availability: true,
-              images: { select: { url: true, name: true }, take: 4 },
+      // Run both queries in parallel for better performance
+      const whereClause = filters.AND.length > 0 ? filters : undefined;
+      const [totalItems, properties] = await Promise.all([
+        prisma.property.count({ where: whereClause }),
+        prisma.property.findMany({
+          where: whereClause,
+          include: {
+            location: true,
+            about: true,
+            images: true,
+            facilities: true,
+            rooms: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                availability: true,
+                images: { select: { url: true, name: true }, take: 4 },
+              },
+            },
+            _count: {
+              select: { rooms: true, facilities: true, bookings: true },
             },
           },
-          _count: {
-            select: { rooms: true, facilities: true, bookings: true },
-          },
-        },
-        orderBy,
-        skip,
-        take: pageSize,
-      });
+          orderBy,
+          skip,
+          take: pageSize,
+        }),
+      ]);
+
+      const totalPages = Math.ceil(totalItems / pageSize);
+      const hasMore = pageNumber < totalPages;
 
       // ✅ Return paginated + filtered data
       res.json({
