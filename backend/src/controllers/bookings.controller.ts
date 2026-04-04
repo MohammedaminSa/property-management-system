@@ -473,7 +473,7 @@ export default {
           select: { propertyId: true },
         });
 
-        propertyIds = [...new Set(managed.map((m) => m.propertyId))];
+        propertyIds = [...new Set(managed.map((m) => m.propertyId))] as string[];
 
         if (!propertyIds.length) {
           return res.status(200).json([]);
