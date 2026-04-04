@@ -168,7 +168,9 @@ export const useGetProperties = (
         maxPrice: input.filters?.maxPrice || undefined,
         city: input.filters?.city || undefined,
         subcity: input.filters?.subcity || undefined,
-        propertyTypes: input.filters?.propertyTypes,
+        propertyTypes: input.filters?.propertyTypes?.length 
+          ? JSON.stringify(input.filters.propertyTypes) 
+          : undefined,
         search: input.filters?.search || undefined,
         page: input.page,
         limit: input.limit,
